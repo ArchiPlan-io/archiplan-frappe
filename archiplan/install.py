@@ -101,4 +101,7 @@ def make_workspace():
             "link_to": "ArchiPlan Settings",
         },
     )
-    doc.save(ignore_permissions=True)
+    if workspace:
+        doc.save(ignore_permissions=True)
+    else:
+        doc.insert(ignore_permissions=True)
