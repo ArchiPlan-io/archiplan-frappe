@@ -1,0 +1,20 @@
+[project]
+name = "archiplan"
+version = "0.0.1"
+authors = [{name = "ArchiPlan", email = "a@archiplan.io"}]
+description = "ArchiPlan schedule integration for ERPNext"
+requires-python = ">=3.10"
+readme = "README.md"
+license = {file = "license.txt"}
+
+[tool.bench.frappe-dependencies]
+frappe = ">=15.0.0,<17.0.0"
+erpnext = ">=15.0.0,<17.0.0"
+
+[tool.ruff]
+line-length = 110
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["F", "E", "W", "I", "UP", "B", "RUF"]
+ignore = ["E501"]

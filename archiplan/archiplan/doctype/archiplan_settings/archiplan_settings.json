@@ -1,0 +1,9 @@
+{
+ "doctype": "DocType", "name": "ArchiPlan Settings", "module": "ArchiPlan", "issingle": 1, "istable": 0, "editable_grid": 0,
+ "fields": [
+  {"fieldname":"archiplan_url","fieldtype":"Data","label":"ArchiPlan URL","default":"https://app.archiplan.io","reqd":1},
+  {"fieldname":"schedule_link","fieldtype":"Data","label":"Schedule link"}
+ ],
+ "permissions": [{"role":"System Manager","read":1,"write":1,"create":1,"delete":0,"submit":0,"cancel":0,"print":1,"email":1,"export":0,"report":0,"share":0}],
+ "sort_field":"modified", "sort_order":"DESC", "actions": []
+}

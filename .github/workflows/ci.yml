@@ -1,0 +1,51 @@
+name: CI
+on:
+  push:
+    branches: [main, version-15, version-16]
+  pull_request:
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - frappe-branch: version-15
+            python-version: '3.10'
+            node-version: 20
+          - frappe-branch: version-16
+            python-version: '3.14'
+            node-version: 24
+    services:
+      mariadb:
+        image: mariadb:10.6
+        env:
+          MYSQL_ROOT_PASSWORD: root
+        ports: [3306:3306]
+        options: --health-cmd="mariadb-admin ping" --health-interval=5s --health-timeout=2s --health-retries=3
+      redis-cache:
+        image: redis:alpine
+        ports: [13000:6379]
+      redis-queue:
+        image: redis:alpine
+        ports: [11000:6379]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: sudo apt-get update && sudo apt-get install -y mariadb-client xvfb libfontconfig1 libxrender1
+      - run: pip install frappe-bench
+      - run: bench init --frappe-branch ${{ matrix.frappe-branch }} --skip-redis-config-generation --skip-assets --python "$(which python)" ~/frappe-bench
+      - run: mariadb --host 127.0.0.1 -u root -proot -e "SET GLOBAL character_set_server='utf8mb4'; SET GLOBAL collation_server='utf8mb4_unicode_ci'"
+      - run: bench get-app erpnext --branch ${{ matrix.frappe-branch }} https://github.com/frappe/erpnext
+        working-directory: /home/runner/frappe-bench
+      - run: bench get-app archiplan "$GITHUB_WORKSPACE"
+        working-directory: /home/runner/frappe-bench
+      - run: bench setup requirements --dev && bench new-site --db-root-password root --admin-password admin test_site && bench --site test_site install-app erpnext && bench --site test_site install-app archiplan
+        working-directory: /home/runner/frappe-bench
+      - run: bench --site test_site run-tests --app archiplan
+        working-directory: /home/runner/frappe-bench

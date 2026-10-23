@@ -1,0 +1,23 @@
+name: Linters
+on: [pull_request, workflow_dispatch]
+permissions:
+  contents: read
+jobs:
+  ruff:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install ruff && ruff check . && ruff format --check .
+  semgrep:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: git clone --depth 1 https://github.com/frappe/semgrep-rules.git frappe-semgrep-rules
+      - run: pip install semgrep
+      - run: semgrep ci --config ./frappe-semgrep-rules/rules --config r/python.lang.correctness
