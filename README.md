@@ -1,12 +1,13 @@
 # ArchiPlan for ERPNext
 
-Production scheduling for ERPNext. Plan production on people, machines and
-shifts from your Sales Orders, and see the live plan inside your ERPNext desk.
+Turn ERPNext Sales Orders into a production plan around your people, machines,
+shifts and deadlines, and see the live schedule inside your ERPNext desk.
 
-[ArchiPlan](https://archiplan.io) is production scheduling for small and
+[ArchiPlan](https://archiplan.io) is AI production scheduling for small and
 mid-sized manufacturers. Describe your shop by voice or text, and it plans every
 order around your people, machines, shifts and deadlines. When a rush job lands
 or someone is off, rebuild the plan in one click.
+[Explore ArchiPlan](https://archiplan.io) to see how it fits your shop.
 
 ![The ArchiPlan schedule inside ERPNext](docs/images/01-schedule-overview.png)
 
@@ -31,7 +32,7 @@ On Frappe Cloud, add **ArchiPlan** from the Marketplace to your bench and site.
 On your own bench:
 
 ```bash
-bench get-app https://github.com/AutomateLab-tech/archiplan-frappe --branch version-16
+bench get-app https://github.com/ArchiPlan-io/archiplan-frappe --branch version-16
 bench --site your-site install-app archiplan
 ```
 
