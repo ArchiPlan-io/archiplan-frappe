@@ -40,6 +40,7 @@ jobs:
       - run: sudo apt-get update && sudo apt-get install -y mariadb-client xvfb libfontconfig1 libxrender1
       - run: pip install frappe-bench
       - run: bench init --frappe-branch ${{ matrix.frappe-branch }} --skip-redis-config-generation --skip-assets --python "$(which python)" ~/frappe-bench
+      - run: printf '[client]\nskip-ssl\n' > ~/.my.cnf
       - run: mariadb --host 127.0.0.1 -u root -proot -e "SET GLOBAL character_set_server='utf8mb4'; SET GLOBAL collation_server='utf8mb4_unicode_ci'"
       - run: bench get-app erpnext --branch ${{ matrix.frappe-branch }} https://github.com/frappe/erpnext
         working-directory: /home/runner/frappe-bench
